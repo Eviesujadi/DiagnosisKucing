@@ -1,2 +1,2 @@
-# DiagnosisKucing
-Diagnosis Kucing menggunakan Metode Naive Bayes
+# diagnosiskucing
+Diagnosis Kucing dengan Menggunakan Metode Naive Bayes

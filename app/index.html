@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnosis Kucing</title>
+</head>
+
+<body>
+    <!--container-->
+    <section class="container">
+
+        <!--questionBox-->
+        <div class="questionBox" id="app">
+
+            <!-- transition -->
+            <transition :duration="{ enter: 500, leave: 300 }" enter-active-class="animated zoomIn"
+                leave-active-class="animated zoomOut" mode="out-in">
+
+                <!--questionContainer-->
+                <div class="questionContainer" v-if="questionIndex<listQuestion.length && questionIndex>=0"
+                    v-bind:key="questionIndex">
+
+                    <header>
+                        <h1 class="title is-6">Apakah kucing Anda mengalami
+                            {{listQuestion[questionIndex].IndicationName.toLowerCase()}}?</h1>
+                        <!--progress-->
+                        <div class="progressContainer">
+                            <progress class="progress is-info is-small"
+                                :value=" Math.ceil((questionIndex/listQuestion.length)*100)"
+                                max="100">{{Math.ceil((questionIndex/listQuestion.length)*100)}}%</progress>
+                            <p>{{ Math.ceil((questionIndex/listQuestion.length)*100)}}% complete</p>
+                        </div>
+                        <!--/progress-->
+                    </header>
+
+                    <!-- questionTitle -->
+                    <div class="image-cropper-rect">
+                        <img :src='listQuestion[questionIndex].IndicationImage' alt="avatar" class="profile-pic">
+                    </div>
+
+                    <!-- quizOptions -->
+                    <div class="optionContainer">
+                        <div class="option" @click="select(1)" :class="{ 'is-selected': userResponses[questionIndex] != null && listAnswer.Atribut[questionIndex]
+                            == 1 }">
+                            Iya
+                        </div>
+                        <div class="option" @click="select(0)" :class="{ 'is-selected': userResponses[questionIndex] != null && listAnswer.Atribut[questionIndex]
+                            == 0}">
+                            Tidak
+                        </div>
+                        <div style="clear:both !important;">
+                        </div>
+                    </div>
+
+                    <!--quizFooter: navigation and progress-->
+                    <footer class="questionFooter">
+
+                        <!--pagination-->
+                        <nav class="pagination" role="navigation" aria-label="pagination">
+
+                            <!-- back button -->
+                            <a class="button" v-on:click="prev();" :disabled="questionIndex < 1">
+                                Back
+                            </a>
+
+                            <!-- next button -->
+                            <a class="button" :class="(userResponses[questionIndex]==null)?'':'is-active'"
+                                v-on:click="next();" :disabled="questionIndex>=listQuestion.length">
+                                {{ (userResponses[questionIndex]==null)?'Skip':'Next' }}
+                            </a>
+
+                        </nav>
+                        <!--/pagination-->
+
+                    </footer>
+                    <!--/quizFooter-->
+
+                </div>
+                <!--/questionContainer-->
+
+                <!--quizCompletedResult-->
+                <div v-if="questionIndex >= listQuestion.length" v-bind:key="questionIndex"
+                    class="quizCompleted has-text-centered">
+
+                    <!-- quizCompletedIcon: Achievement Icon -->
+                    <div class="image-cropper-round">
+                        <img :src='disease.DiseaseImage' :alt="disease.DiseaseName" class="profile-pic">
+                    </div>
+
+                    <!--resultTitleBlock-->
+                    <h2 class="title">
+                        {{disease.DiseaseName}}
+                    </h2>
+                    <div class="subtitle" style="text-align: justify !important;">
+                        <b style="text-align: justify !important;">Penyebab:</b>
+                        <p style="text-align: justify !important;">{{disease.DiseaseCause}}</p>
+                        <br>
+                        <b style="text-align: justify !important;">Solusi:</b>
+                        <p style="text-align: justify !important;">{{disease.DiseaseSolution}}</p>
+                    </div>
+                    <br>
+                    <a class="button" @click="restart()">Back to Start <i class="fa fa-refresh"></i></a>
+                    <!--/resultTitleBlock-->
+
+                </div>
+                <!--/quizCompetedResult-->
+
+                <!--quizStart-->
+                <div v-if="questionIndex<0" v-bind:key="questionIndex" class="quizCompleted has-text-centered">
+
+                    <!-- quizStartIcon: Achievement Icon -->
+                    <div class="image-cropper-round">
+                        <img src="https://cdn0-production-images-kly.akamaized.net/tAr72vTJCpF4IF9O5L493CD79kE=/640x360/smart/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/2754932/original/005940800_1552970791-fotoHL_kucing.jpg"
+                            alt="Diagnosis Kucing" class="profile-pic">
+                    </div>
+
+                    <!--resultTitleBlock-->
+                    <h2 class="title">
+                        Diagnosis Kucing
+                    </h2>
+                    <p class="subtitle">
+                        Klik tombol start untuk memulai diagnosis kucing Anda.
+                    </p>
+                    <br>
+                    <a class="button" @click="start()">Start <i class="fa fa-refresh"></i></a>
+                    <!--/resultTitleBlock-->
+
+                </div>
+                <!--/quizStart-->
+
+            </transition>
+
+        </div>
+        <!--/questionBox-->
+
+    </section>
+    <!--/container-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./index.js"></script>
+    <link rel="stylesheet" href="./index.css" />
+</body>
+
+</html>
